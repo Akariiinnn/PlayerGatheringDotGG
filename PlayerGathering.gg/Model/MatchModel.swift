@@ -9,12 +9,14 @@ import Foundation
 
 class MatchModel: ObservableObject {
     
-    @Published var match = [Match] ()
+    @Published var leagueMatchMetadata = [Metadata] ()
+    @Published var leagueMatchInfo = [Info] ()
     
-    func fetchData(matchID: String) async {
+    func fetchData(matchID: String) async -> (Metadata?, Info?){
         guard let url = URL(string: "https://europe.api.riotgames.com/lol/match/v5/matches/\(matchID)?api_key=RGAPI-d4b7f805-fcf6-4bc6-acb5-054eda647f95") else {
             print("URL Invalide")
-            return
+            return(nil, nil)
+            
         }
         
         do {
@@ -22,21 +24,23 @@ class MatchModel: ObservableObject {
             
             if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 {
                 do {
-                    let decodeResponse = try JSONDecoder().decode([Match].self, from: data)
-                    DispatchQueue.main.async {
-                        self.match = decodeResponse
-                    }//:async
+                    let decodeResponse = try JSONDecoder().decode(MatchResponse.self, from: data)
+                    return (decodeResponse.metadata, decodeResponse.info)
                 }//:do
                 catch {
-                    print("JSON Decoding error: \(error) + ratio")
+                    print("JSON Decoding error: \(error)")
+                    return (nil, nil)
                 }//:catch
             }
             else {
                 print("HTTP Error: Status code is not 200")
+                print(url)
+                return (nil, nil)
             }
         }//:do
         catch {
             print("Network Request error: \(error)")
+            return (nil, nil)
         }
     }
 }

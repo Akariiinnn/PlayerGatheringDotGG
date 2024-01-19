@@ -11,7 +11,7 @@ import SwiftUI
 struct PlayerGathering_ggApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            MainMenu()
         }
     }
 }

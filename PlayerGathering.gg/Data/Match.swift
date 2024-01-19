@@ -7,35 +7,28 @@
 
 import Foundation
 
-struct Match: Codable {
-    
-    let metadata: [Metadata]
-    
-    struct Metadata: Codable {
-        let matchID: String
-        let participants: [String]
-    }
-    
-    let info: [Info]
-    
-    struct Info: Codable {
-        let gameCreation: CLong
-        let gameDuration: CLong
-        let gameEndTimeStamp: CLong
-        let gameID: CLong
-        let gameMode: String
-        let gameStartTimeStamp: CLong
-        let gameType: String
-        let gameVersion: String
-        let mapID: Int
-        let participants: [Participants]
-        
-    }
+struct Metadata: Codable {
+    let matchId: String
+    let participants: [String]
+}
+
+struct Info: Codable {
+    let gameCreation: CLong
+    let gameDuration: CLong
+    let gameEndTimestamp: CLong
+    let gameId: CLong
+    let gameMode: String
+    let gameStartTimestamp: CLong
+    let gameType: String
+    let gameVersion: String
+    let mapId: Int
+    let participants: [Participants]
     
     struct Participants: Codable {
         let assists: Int
         let champLevel: Int
         let championName: String
+        let championId: Int
         let championTransform: Int
         let damageDealtToBuildings: Int
         let damageDealtToObjectives: Int
@@ -51,17 +44,18 @@ struct Match: Codable {
         let kills: Int
         let lane: String
         let magicDamageDealt: Int
-        let neutralMinionsKilles: Int
+        let neutralMinionsKilled: Int
         let pentaKills: Int
-        let perks: [Perks]
+        let perks: Perks
         let physicalDamageDealtToChampions: Int
         let puuid: String
-        let riotIdName: String
+        let profileIcon: Int
+        let riotIdGameName: String
         let riotIdTagline: String
-        let teamID: Int
+        let teamId: Int
         let teamPosition: String
         let totalDamageDealtToChampions: Int
-        let totalDamageShieldedToChampions: Int
+        let totalDamageShieldedOnTeammates: Int
         let totalDamageTaken: Int
         let totalHeal: Int
         let totalHealsOnTeammates: Int
@@ -70,23 +64,28 @@ struct Match: Codable {
         let visionScore: Int
         let win: Bool
         
-    }
-    
-    struct Perks: Codable {
-        let styles: [Styles]
-        
-        struct Styles: Codable {
-            let description: String
-            let selections: [Selections]
-            let style: Int
+        struct Perks: Codable {
+            let styles: [Styles]
             
-            struct Selections: Codable {
-                let perk: Int
-                let var1: Int
-                let var2: Int
-                let var3: Int
+            struct Styles: Codable {
+                let description: String
+                let selections: [Selections]
+                let style: Int
+                
+                struct Selections: Codable {
+                    let perk: Int
+                    let var1: Int
+                    let var2: Int
+                    let var3: Int
+                }
             }
+            
         }
         
     }
+}
+
+struct MatchResponse : Codable {
+    let metadata: Metadata
+    let info: Info
 }

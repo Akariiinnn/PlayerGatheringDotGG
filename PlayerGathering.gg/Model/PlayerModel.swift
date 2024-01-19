@@ -7,13 +7,15 @@
 
 import Foundation
 
-class LastMatchesModel: ObservableObject {
+class PlayerModel: ObservableObject {
     
-    @Published var matches = [String] ()
+    @Published var player = String ()
+    @Published var statusCode = Int ()
+    @Published var playerName = String ()
     
     
-    func fetchData(riotpuuid: String) async {
-        guard let url = URL(string: "https://europe.api.riotgames.com/lol/match/v5/matches/by-puuid/\(riotpuuid)/ids?start=0&count=10&api_key=RGAPI-d4b7f805-fcf6-4bc6-acb5-054eda647f95") else {
+    func fetchData(tagLine: String, gameName: String) async {
+        guard let url = URL(string: "https://europe.api.riotgames.com/riot/account/v1/accounts/by-riot-id/\(gameName)/\(tagLine)?api_key=RGAPI-d4b7f805-fcf6-4bc6-acb5-054eda647f95") else {
             print("URL Invalide")
             return
         }
@@ -23,9 +25,11 @@ class LastMatchesModel: ObservableObject {
             
             if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 {
                 do {
-                    let decodeResponse = try JSONDecoder().decode([String].self, from: data)
+                    let decodeResponse = try JSONDecoder().decode(Player.self, from: data)
                     DispatchQueue.main.async {
-                        self.matches = decodeResponse
+                        self.player = decodeResponse.puuid
+                        self.statusCode = httpResponse.statusCode
+                        self.playerName = decodeResponse.gameName
                     }//:async
                 }//:do
                 catch {

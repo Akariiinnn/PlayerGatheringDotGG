@@ -11,18 +11,31 @@ struct ProfileView: View {
     //MARK: PROPERTIES
     @StateObject var lastMatchesModel = LastMatchesModel()
     @StateObject var matchModel = MatchModel()
+    @StateObject var runesModel = RunesModel()
     
     
     @State private var matchData: [String: (Metadata?, Info?)] = [:]
     let playerPuuid : String
     let playerName : String
+    let summonerSpells = SummonerSpells()
     
     @State var playerProfileIcon: String = "https://raw.communitydragon.org/latest/game/assets/ux/summonericons/profileicon0.png"
     
     func findParticipant(byPuuid puuid: String, in participants: [Info.Participants]) -> Info.Participants? {
         return participants.first { $0.puuid == puuid }
     }
-    
+
+    // Create function to find perk by ID
+    func findPerk(byId id: Int, in perks: [Perks]) -> Perks? {
+        return perks.first { $0.id == id }
+    }
+
+    // Create function to find rune in perk by ID
+    func findRune(byId id: Int, in perk: Perks) -> Perks.Rune? {
+        return perk.slots.flatMap { $0.runes }.first { $0.id == id }
+    }
+
+
     var body: some View {
         //MARK: BODY
         NavigationStack {
@@ -49,6 +62,19 @@ struct ProfileView: View {
                     let playerChampId = player?.championId
                     let playerChampUrl = "https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/champion-icons/\(playerChampId ?? -1).png"
                     let playerProfileIcon = "https://raw.communitydragon.org/latest/game/assets/ux/summonericons/profileicon\(player?.profileIcon ?? 0).png"
+                    let playerSummonerSpell1 = player?.summoner1Id
+                    let playerSummonerSpell2 = player?.summoner2Id 
+                    let playerSummonerSpell1Url = "https://raw.communitydragon.org/latest/game/data/spells/icons2d/\(summonerSpells.spells[playerSummonerSpell1 ?? 0] ?? "summoner_avatar2.png")"
+                    let playerSummonerSpell2Url = "https://raw.communitydragon.org/latest/game/data/spells/icons2d/\(summonerSpells.spells[playerSummonerSpell2 ?? 0] ?? "summoner_avatar3.png")"
+                    let playerPrimaryRune = player?.perks.styles[0].selections[0].perk
+                    let playerSecondaryRune = player?.perks.styles[1].style
+                    let playerPrimaryStyle = player?.perks.styles[0].style
+                    let perk1 = findPerk(byId: playerPrimaryRune ?? 0, in: runesModel.perks)
+                    let perk2 = findPerk(byId: playerSecondaryRune ?? 0, in: runesModel.perks)
+                    let rune1 = findRune(byId: playerPrimaryStyle ?? 0, in: perk1 ?? Perks(id: 0, key: "", icon: "", name: "", slots: []))
+                    // Icon for the primary rune using the rune ID and the runesModel variable
+                    let rune1Icon = "https://ddragon.canisback.com/img/\(rune1?.icon ?? "perk-images/Styles/7200_Domination.png")"
+                    let perk2Icon = "https://ddragon.canisback.com/img/\(perk2?.icon ?? "perk-images/Styles/7200_Domination.png")"
                     let group1 = Array(participants.prefix(5))
                     let group2 = Array(participants.dropFirst(5))
                     
@@ -64,25 +90,37 @@ struct ProfileView: View {
                             .shadow(radius: 30)
                             .clipShape(Circle())
                             HStack {
-                                Image("flash")
-                                    .resizable()
-                                    .frame(width: 30, height: 30)
-                                    .aspectRatio(contentMode: .fit)
-                                Image("ignite")
-                                    .resizable()
-                                    .frame(width: 30, height: 30)
-                                    .aspectRatio(contentMode: .fit)
+                                AsyncImage(url: URL(string: playerSummonerSpell1Url)) { image in
+                                    image.resizable()
+                                } placeholder: {
+                                    ProgressView()
+                                }
+                                .frame(width: 30, height: 30)
+                                .aspectRatio(contentMode: .fit)
+                                AsyncImage(url: URL(string: playerSummonerSpell2Url)) { image in
+                                    image.resizable()
+                                } placeholder: {
+                                    ProgressView()
+                                }
+                                .frame(width: 30, height: 30)
+                                .aspectRatio(contentMode: .fit)
                             }
                         }
                         VStack {
-                            Image("Conqueror")
-                                .resizable()
+                            AsyncImage(url: URL(string: rune1Icon)) { image in
+                                    image.resizable()
+                                } placeholder: {
+                                    ProgressView()
+                                }
                                 .frame(width: 20, height: 20)
                                 .aspectRatio(contentMode: .fit)
                                 .shadow(radius: 30)
                                 .clipShape(Circle())
-                            Image("inspiration")
-                                .resizable()
+                            AsyncImage(url: URL(string: perk2Icon)) { image in
+                                    image.resizable()
+                                } placeholder: {
+                                    ProgressView()
+                                }
                                 .frame(width: 20, height: 20)
                                 .aspectRatio(contentMode: .fit)
                                 .shadow(radius: 30)

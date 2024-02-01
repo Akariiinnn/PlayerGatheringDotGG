@@ -52,6 +52,8 @@ struct Info: Codable {
         let profileIcon: Int
         let riotIdGameName: String
         let riotIdTagline: String
+        let summoner1Id: Int
+        let summoner2Id: Int
         let teamId: Int
         let teamPosition: String
         let totalDamageDealtToChampions: Int

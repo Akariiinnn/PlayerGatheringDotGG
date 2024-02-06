@@ -24,15 +24,9 @@ struct ProfileView: View {
     func findParticipant(byPuuid puuid: String, in participants: [Info.Participants]) -> Info.Participants? {
         return participants.first { $0.puuid == puuid }
     }
-
-    // Create function to find perk by ID
-    func findPerk(byId id: Int, in perks: [Perks]) -> Perks? {
-        return perks.first { $0.id == id }
-    }
-
-    // Create function to find rune in perk by ID
-    func findRune(byId id: Int, in perk: Perks) -> Runes? {
-        return perk.slots.flatMap { $0.runes }.first { $0.id == id }
+    
+    func findRune(byId id: Int, in perks: [Perks]) -> Perks? {
+        return perks.first { $0.id == id}
     }
 
 
@@ -66,15 +60,9 @@ struct ProfileView: View {
                     let playerSummonerSpell2 = player?.summoner2Id 
                     let playerSummonerSpell1Url = "https://raw.communitydragon.org/latest/game/data/spells/icons2d/\(summonerSpells.spells[playerSummonerSpell1 ?? 0] ?? "summoner_avatar2.png")"
                     let playerSummonerSpell2Url = "https://raw.communitydragon.org/latest/game/data/spells/icons2d/\(summonerSpells.spells[playerSummonerSpell2 ?? 0] ?? "summoner_avatar3.png")"
-                    let playerPrimaryRune = player?.perks.styles[0].selections[0].perk
-                    let playerSecondaryRune = player?.perks.styles[1].style
-                    let playerPrimaryStyle = player?.perks.styles[0].style
-                    let perk1 = findPerk(byId: playerPrimaryRune ?? 0, in: runesModel.perks)
-                    let perk2 = findPerk(byId: playerSecondaryRune ?? 0, in: runesModel.perks)
-                    let rune1 = findRune(byId: playerPrimaryStyle ?? 0, in: perk1 ?? Perks(id: 0, key: "", icon: "", name: "", slots: []))
-                    // Icon for the primary rune using the rune ID and the runesModel variable
-                    let rune1Icon = "https://ddragon.canisback.com/img/\(rune1?.icon ?? "perk-images/Styles/7200_Domination.png")"
-                    let perk2Icon = "https://ddragon.canisback.com/img/\(perk2?.icon ?? "perk-images/Styles/7200_Domination.png")"
+                    let primary = findRune(player?.perks.styles.first?.selections.first?.perk)
+                    let secondary = findRune(player?.perks.styles.first?.style)
+                    
                     let group1 = Array(participants.prefix(5))
                     let group2 = Array(participants.dropFirst(5))
                     
@@ -107,7 +95,7 @@ struct ProfileView: View {
                             }
                         }
                         VStack {
-                            AsyncImage(url: URL(string: rune1Icon)) { image in
+                            AsyncImage(url: URL(string: "https://ddragon.canisback.com/img/perk-images/Styles/\(primary ?? 7200)_Domination.png")) { image in
                                     image.resizable()
                                 } placeholder: {
                                     ProgressView()
@@ -116,7 +104,7 @@ struct ProfileView: View {
                                 .aspectRatio(contentMode: .fit)
                                 .shadow(radius: 30)
                                 .clipShape(Circle())
-                            AsyncImage(url: URL(string: perk2Icon)) { image in
+                            AsyncImage(url: URL(string: "https://ddragon.canisback.com/img/perk-images/Styles/7200_Domination.png")) { image in
                                     image.resizable()
                                 } placeholder: {
                                     ProgressView()

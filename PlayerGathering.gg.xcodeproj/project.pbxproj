@@ -17,6 +17,9 @@
 		5AAB9BF52B5AB0DB004BFE75 /* MainMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AAB9BF42B5AB0DB004BFE75 /* MainMenu.swift */; };
 		5AAB9BF72B5AB3F8004BFE75 /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AAB9BF62B5AB3F8004BFE75 /* Player.swift */; };
 		5AAB9BF92B5AB44B004BFE75 /* PlayerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AAB9BF82B5AB44B004BFE75 /* PlayerModel.swift */; };
+		5AABA40E2B7281F100413568 /* Runes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AABA40D2B7281F100413568 /* Runes.swift */; };
+		5AABA4102B7281F900413568 /* SummonerSpell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AABA40F2B7281F900413568 /* SummonerSpell.swift */; };
+		5AABA4122B7281FF00413568 /* RunesModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AABA4112B7281FF00413568 /* RunesModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -31,6 +34,9 @@
 		5AAB9BF42B5AB0DB004BFE75 /* MainMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainMenu.swift; sourceTree = "<group>"; };
 		5AAB9BF62B5AB3F8004BFE75 /* Player.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
 		5AAB9BF82B5AB44B004BFE75 /* PlayerModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerModel.swift; sourceTree = "<group>"; };
+		5AABA40D2B7281F100413568 /* Runes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Runes.swift; path = ../../../../Downloads/Runes.swift; sourceTree = "<group>"; };
+		5AABA40F2B7281F900413568 /* SummonerSpell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SummonerSpell.swift; path = ../../../../Downloads/SummonerSpell.swift; sourceTree = "<group>"; };
+		5AABA4112B7281FF00413568 /* RunesModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RunesModel.swift; path = ../../../../Downloads/RunesModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -84,6 +90,8 @@
 		5AA5EB532B592F9000E43EDF /* Data */ = {
 			isa = PBXGroup;
 			children = (
+				5AABA40F2B7281F900413568 /* SummonerSpell.swift */,
+				5AABA40D2B7281F100413568 /* Runes.swift */,
 				5AA5EB562B59392D00E43EDF /* Match.swift */,
 				5AAB9BF62B5AB3F8004BFE75 /* Player.swift */,
 			);
@@ -93,6 +101,7 @@
 		5AA5EB542B592F9600E43EDF /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				5AABA4112B7281FF00413568 /* RunesModel.swift */,
 				5AA5EB5C2B59599100E43EDF /* LastMatchesModel.swift */,
 				5AAB9BF82B5AB44B004BFE75 /* PlayerModel.swift */,
 				5AA5EB602B596AF700E43EDF /* MatchModel.swift */,
@@ -181,10 +190,13 @@
 			files = (
 				5AA5EB482B592F8200E43EDF /* ProfileView.swift in Sources */,
 				5AAB9BF52B5AB0DB004BFE75 /* MainMenu.swift in Sources */,
+				5AABA4102B7281F900413568 /* SummonerSpell.swift in Sources */,
 				5AAB9BF92B5AB44B004BFE75 /* PlayerModel.swift in Sources */,
+				5AABA4122B7281FF00413568 /* RunesModel.swift in Sources */,
 				5AA5EB612B596AF700E43EDF /* MatchModel.swift in Sources */,
 				5AA5EB572B59392D00E43EDF /* Match.swift in Sources */,
 				5AAB9BF72B5AB3F8004BFE75 /* Player.swift in Sources */,
+				5AABA40E2B7281F100413568 /* Runes.swift in Sources */,
 				5AA5EB5D2B59599100E43EDF /* LastMatchesModel.swift in Sources */,
 				5AA5EB462B592F8200E43EDF /* PlayerGathering_ggApp.swift in Sources */,
 			);

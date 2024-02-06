@@ -31,7 +31,7 @@ struct ProfileView: View {
     }
 
     // Create function to find rune in perk by ID
-    func findRune(byId id: Int, in perk: Perks) -> Perks.Rune? {
+    func findRune(byId id: Int, in perk: Perks) -> Runes? {
         return perk.slots.flatMap { $0.runes }.first { $0.id == id }
     }
 

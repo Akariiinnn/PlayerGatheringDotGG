@@ -24,11 +24,6 @@ struct ProfileView: View {
     func findParticipant(byPuuid puuid: String, in participants: [Info.Participants]) -> Info.Participants? {
         return participants.first { $0.puuid == puuid }
     }
-    
-    func findRune(byId id: Int, in perks: [Perks]) -> Perks? {
-        return perks.first { $0.id == id}
-    }
-
 
     var body: some View {
         //MARK: BODY
@@ -60,8 +55,15 @@ struct ProfileView: View {
                     let playerSummonerSpell2 = player?.summoner2Id 
                     let playerSummonerSpell1Url = "https://raw.communitydragon.org/latest/game/data/spells/icons2d/\(summonerSpells.spells[playerSummonerSpell1 ?? 0] ?? "summoner_avatar2.png")"
                     let playerSummonerSpell2Url = "https://raw.communitydragon.org/latest/game/data/spells/icons2d/\(summonerSpells.spells[playerSummonerSpell2 ?? 0] ?? "summoner_avatar3.png")"
-                    let primary = findRune(player?.perks.styles.first?.selections.first?.perk)
-                    let secondary = findRune(player?.perks.styles.first?.style)
+                    
+                    let primary = runesModel.primaryRune(for: player)
+                    let secondary = runesModel.secondaryRune(for: player)
+                    
+                    let primaryIconUrl = runesModel.fetchPrimaryRuneIcon(for: primary.1, for: primary.0)
+                    let secondaryIconUrl = runesModel.fetchSecondaryRuneIcon(for: secondary)
+                    
+                    let primaryUrl = "https://ddragon.canisback.com/img/" + (primaryIconUrl ?? "perk-images/Styles/7200_Domination.png")
+                    let secondaryUrl = "https://ddragon.canisback.com/img/" + (secondaryIconUrl ?? "perk-images/Styles/7200_Domination.png")
                     
                     let group1 = Array(participants.prefix(5))
                     let group2 = Array(participants.dropFirst(5))
@@ -95,7 +97,7 @@ struct ProfileView: View {
                             }
                         }
                         VStack {
-                            AsyncImage(url: URL(string: "https://ddragon.canisback.com/img/perk-images/Styles/\(primary ?? 7200)_Domination.png")) { image in
+                            AsyncImage(url: URL(string: primaryUrl)) { image in
                                     image.resizable()
                                 } placeholder: {
                                     ProgressView()
@@ -104,7 +106,7 @@ struct ProfileView: View {
                                 .aspectRatio(contentMode: .fit)
                                 .shadow(radius: 30)
                                 .clipShape(Circle())
-                            AsyncImage(url: URL(string: "https://ddragon.canisback.com/img/perk-images/Styles/7200_Domination.png")) { image in
+                            AsyncImage(url: URL(string: secondaryUrl)) { image in
                                     image.resizable()
                                 } placeholder: {
                                     ProgressView()
@@ -140,8 +142,8 @@ struct ProfileView: View {
                         
                         HStack {
                             
+                            
                             VStack {
-                                
                                 // First group of participants
                                 ForEach(group1, id: \.puuid) { participant in
                                     Text(participant.riotIdGameName)
@@ -161,6 +163,7 @@ struct ProfileView: View {
                                     // Add more Text views for other participant information as needed
                                 }
                             }
+                             
                         }
                         
                         
@@ -178,6 +181,9 @@ struct ProfileView: View {
                     
                 }//:ForEach
             }//:List
+            .task {
+                await runesModel.fetchData()
+            }
             
         }//:NavigationStack
         .task {
